@@ -199,4 +199,9 @@ public interface UserRelationshipRepository extends JpaRepository<UserRelationsh
      * Find relationships updated after a specific date
      */
     List<UserRelationship> findByUpdatedAtAfter(java.time.LocalDateTime updatedAt);
+
+    /**
+     * Find relationship by user1, user2, and status
+     */
+    Optional<UserRelationship> findByUser1IdAndUser2IdAndStatus(Long user1Id, Long user2Id, RelationshipStatus status);
 }

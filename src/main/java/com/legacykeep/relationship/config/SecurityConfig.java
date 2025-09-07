@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/relationship-types/**").permitAll() // Allow public access to relationship types
                 
                 // Protected endpoints - require authentication
+                .requestMatchers("/api/v1/relationship-requests/**").authenticated()
                 .requestMatchers("/api/v1/relationships/**").authenticated()
                 .requestMatchers("/api/v1/user-relationships/**").authenticated()
                 
