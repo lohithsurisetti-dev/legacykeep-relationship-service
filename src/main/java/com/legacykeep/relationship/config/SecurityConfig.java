@@ -33,6 +33,7 @@ public class SecurityConfig {
                 // Public endpoints
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/api/v1/health/**").permitAll() // Allow public access to health endpoints
                 .requestMatchers("/api/v1/relationship-types/**").permitAll() // Allow public access to relationship types
                 
                 // Protected endpoints - require authentication
