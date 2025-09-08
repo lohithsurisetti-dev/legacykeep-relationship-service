@@ -438,3 +438,4 @@ For support and questions:
 - **Version 1.2.0**: Relationship analytics
 - **Version 1.3.0**: Relationship templates
 - **Version 2.0.0**: Graph database integration
+

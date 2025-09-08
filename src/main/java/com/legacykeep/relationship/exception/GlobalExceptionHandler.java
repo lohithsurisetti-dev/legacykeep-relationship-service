@@ -105,3 +105,4 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
 }
+

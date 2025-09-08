@@ -28,3 +28,4 @@ COMMENT ON COLUMN relationship_types.category IS 'Category of relationship (FAMI
 COMMENT ON COLUMN relationship_types.bidirectional IS 'Whether this relationship type works both ways';
 COMMENT ON COLUMN relationship_types.reverse_type_id IS 'Reference to the reverse relationship type (e.g., Father → Son)';
 COMMENT ON COLUMN relationship_types.metadata IS 'JSON field for additional properties and descriptions';
+

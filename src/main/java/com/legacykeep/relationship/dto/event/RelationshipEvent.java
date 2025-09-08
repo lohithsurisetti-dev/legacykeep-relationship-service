@@ -69,3 +69,4 @@ public class RelationshipEvent {
      */
     private String eventVersion;
 }
+

@@ -13,3 +13,4 @@ public class RelationshipNotFoundException extends RelationshipException {
         super("Relationship not found with ID: " + relationshipId);
     }
 }
+

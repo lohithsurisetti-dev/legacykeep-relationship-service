@@ -49,3 +49,4 @@ public class CreateRelationshipTypeRequest {
      */
     private String metadata;
 }
+

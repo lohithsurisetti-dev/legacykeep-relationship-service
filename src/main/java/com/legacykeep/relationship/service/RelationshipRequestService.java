@@ -71,3 +71,4 @@ public interface RelationshipRequestService {
      */
     Page<RelationshipResponse> getAllPendingRequests(Pageable pageable);
 }
+

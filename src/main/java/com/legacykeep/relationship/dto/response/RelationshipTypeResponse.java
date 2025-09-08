@@ -71,3 +71,4 @@ public class RelationshipTypeResponse {
         return Boolean.TRUE.equals(bidirectional);
     }
 }
+

@@ -107,3 +107,4 @@ public interface RelationshipService {
      */
     long countActiveUserRelationships(Long userId);
 }
+

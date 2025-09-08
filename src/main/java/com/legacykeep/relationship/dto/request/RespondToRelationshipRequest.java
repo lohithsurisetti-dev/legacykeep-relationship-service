@@ -49,3 +49,4 @@ public class RespondToRelationshipRequest {
         REJECT
     }
 }
+

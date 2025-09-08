@@ -122,3 +122,4 @@ public interface RelationshipTypeService {
      */
     RelationshipType getRelationshipTypeEntityByName(String name);
 }
+

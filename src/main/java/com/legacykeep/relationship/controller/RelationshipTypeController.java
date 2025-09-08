@@ -125,3 +125,4 @@ public class RelationshipTypeController {
         return ResponseEntity.ok(ApiResponse.success(stats, "Relationship type statistics retrieved successfully"));
     }
 }
+

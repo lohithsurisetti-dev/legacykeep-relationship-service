@@ -62,3 +62,4 @@ public class SendRelationshipRequest {
      */
     private String requestMessage;
 }
+

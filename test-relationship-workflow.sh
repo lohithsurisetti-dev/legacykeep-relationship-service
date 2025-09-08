@@ -86,3 +86,4 @@ echo "- User 2 received the pending request"
 echo "- User 2 accepted the request"
 echo "- Relationship status changed from PENDING to ACTIVE"
 echo "- Two-way approval workflow working correctly!"
+

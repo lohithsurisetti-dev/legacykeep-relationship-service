@@ -122,3 +122,4 @@ public enum RelationshipStatus {
         return this == PENDING || this == SUSPENDED;
     }
 }
+

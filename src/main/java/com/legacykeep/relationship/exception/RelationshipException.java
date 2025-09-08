@@ -13,3 +13,4 @@ public class RelationshipException extends RuntimeException {
         super(message, cause);
     }
 }
+

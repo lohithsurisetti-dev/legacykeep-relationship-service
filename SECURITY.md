@@ -515,3 +515,4 @@ class SecurityIntegrationTest {
 - **NIST Cybersecurity Framework**: https://www.nist.gov/cyberframework
 - **GDPR Guidelines**: https://gdpr.eu/
 - **Security Advisories**: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+

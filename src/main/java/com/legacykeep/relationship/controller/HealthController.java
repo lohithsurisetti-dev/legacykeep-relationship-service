@@ -63,3 +63,4 @@ public class HealthController {
         return ResponseEntity.ok(ApiResponse.success(info, "Service information retrieved"));
     }
 }
+

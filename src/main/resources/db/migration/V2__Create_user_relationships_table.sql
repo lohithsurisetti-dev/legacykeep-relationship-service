@@ -44,3 +44,4 @@ COMMENT ON COLUMN user_relationships.start_date IS 'When the relationship began'
 COMMENT ON COLUMN user_relationships.end_date IS 'When the relationship ended (NULL for active relationships)';
 COMMENT ON COLUMN user_relationships.status IS 'Current status of the relationship';
 COMMENT ON COLUMN user_relationships.metadata IS 'JSON field for additional relationship properties';
+

@@ -101,3 +101,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                requestURI.startsWith("/api/v1/relationship-types/");
     }
 }
+

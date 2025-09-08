@@ -90,3 +90,4 @@ UPDATE relationship_types SET reverse_type_id = (SELECT id FROM relationship_typ
 UPDATE relationship_types SET reverse_type_id = (SELECT id FROM relationship_types WHERE name = 'Doctor') WHERE name = 'Patient';
 UPDATE relationship_types SET reverse_type_id = (SELECT id FROM relationship_types WHERE name = 'Mentee') WHERE name = 'Mentor';
 UPDATE relationship_types SET reverse_type_id = (SELECT id FROM relationship_types WHERE name = 'Mentor') WHERE name = 'Mentee';
+

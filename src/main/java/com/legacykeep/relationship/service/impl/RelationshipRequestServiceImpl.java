@@ -13,6 +13,7 @@ import com.legacykeep.relationship.service.RelationshipRequestService;
 import com.legacykeep.relationship.service.RelationshipTypeService;
 import com.legacykeep.relationship.service.EventPublisherService;
 import com.legacykeep.relationship.service.CacheService;
+import com.legacykeep.relationship.service.UserServiceClient;
 import com.legacykeep.relationship.dto.event.RelationshipRequestSentEvent;
 import com.legacykeep.relationship.dto.event.RelationshipRequestAcceptedEvent;
 import com.legacykeep.relationship.dto.event.RelationshipRequestRejectedEvent;
@@ -42,6 +43,7 @@ public class RelationshipRequestServiceImpl implements RelationshipRequestServic
     private final RelationshipTypeService relationshipTypeService;
     private final EventPublisherService eventPublisherService;
     private final CacheService cacheService;
+    private final UserServiceClient userServiceClient;
 
     @Override
     public RelationshipResponse sendRelationshipRequest(SendRelationshipRequest request) {
@@ -51,6 +53,20 @@ public class RelationshipRequestServiceImpl implements RelationshipRequestServic
         // Validate that users are different
         if (request.getRequesterUserId().equals(request.getRecipientUserId())) {
             throw new IllegalArgumentException("Cannot send relationship request to yourself");
+        }
+
+        // Validate that both users exist in User Service
+        List<Long> userIds = List.of(request.getRequesterUserId(), request.getRecipientUserId());
+        if (!userServiceClient.validateUsersExist(userIds)) {
+            throw new IllegalArgumentException("One or more users do not exist in the system");
+        }
+
+        // Validate that both users are active
+        if (!userServiceClient.isUserActive(request.getRequesterUserId())) {
+            throw new IllegalArgumentException("Requester user is not active");
+        }
+        if (!userServiceClient.isUserActive(request.getRecipientUserId())) {
+            throw new IllegalArgumentException("Recipient user is not active");
         }
 
         // Validate relationship type exists
@@ -122,6 +138,14 @@ public class RelationshipRequestServiceImpl implements RelationshipRequestServic
         // Validate that the relationship is pending
         if (relationship.getStatus() != RelationshipStatus.PENDING) {
             throw new IllegalStateException("Relationship request is not pending");
+        }
+
+        // Validate that the responder user exists and is active
+        if (!userServiceClient.validateUserExists(request.getResponderUserId())) {
+            throw new IllegalArgumentException("Responder user does not exist in the system");
+        }
+        if (!userServiceClient.isUserActive(request.getResponderUserId())) {
+            throw new IllegalArgumentException("Responder user is not active");
         }
 
         // Validate that the responder is the recipient

@@ -17,3 +17,4 @@ public class RelationshipTypeNotFoundException extends RelationshipException {
         super("Relationship type not found with name: " + name + ". " + message);
     }
 }
+

@@ -30,3 +30,4 @@ public class RelationshipServiceApplication {
         SpringApplication.run(RelationshipServiceApplication.class, args);
     }
 }
+

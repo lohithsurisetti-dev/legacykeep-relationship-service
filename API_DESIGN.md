@@ -751,3 +751,4 @@ Sample test data is available in `/docs/test-data/`:
 - **Version 1.2.0**: Relationship analytics endpoints
 - **Version 1.3.0**: Webhook support
 - **Version 2.0.0**: Graph-based relationship queries
+

@@ -101,3 +101,4 @@ public class RelationshipResponse {
         return status == RelationshipStatus.SUSPENDED;
     }
 }
+
