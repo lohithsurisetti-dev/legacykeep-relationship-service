@@ -11,6 +11,11 @@ import com.legacykeep.relationship.exception.RelationshipTypeNotFoundException;
 import com.legacykeep.relationship.repository.UserRelationshipRepository;
 import com.legacykeep.relationship.service.RelationshipRequestService;
 import com.legacykeep.relationship.service.RelationshipTypeService;
+import com.legacykeep.relationship.service.EventPublisherService;
+import com.legacykeep.relationship.service.CacheService;
+import com.legacykeep.relationship.dto.event.RelationshipRequestSentEvent;
+import com.legacykeep.relationship.dto.event.RelationshipRequestAcceptedEvent;
+import com.legacykeep.relationship.dto.event.RelationshipRequestRejectedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,6 +40,8 @@ public class RelationshipRequestServiceImpl implements RelationshipRequestServic
 
     private final UserRelationshipRepository userRelationshipRepository;
     private final RelationshipTypeService relationshipTypeService;
+    private final EventPublisherService eventPublisherService;
+    private final CacheService cacheService;
 
     @Override
     public RelationshipResponse sendRelationshipRequest(SendRelationshipRequest request) {
@@ -77,6 +84,29 @@ public class RelationshipRequestServiceImpl implements RelationshipRequestServic
         UserRelationship savedRequest = userRelationshipRepository.save(relationshipRequest);
         log.info("Created relationship request with ID: {}", savedRequest.getId());
 
+        // Publish relationship request sent event
+        try {
+            String eventId = eventPublisherService.generateEventId();
+            RelationshipRequestSentEvent event = RelationshipRequestSentEvent.create(
+                    eventId,
+                    savedRequest.getId(),
+                    request.getRequesterUserId(),
+                    request.getRecipientUserId(),
+                    request.getRelationshipTypeId(),
+                    relationshipType.getName(),
+                    request.getRequestMessage(),
+                    request.getContextId()
+            );
+            eventPublisherService.publishRelationshipEvent(event);
+            log.info("Published relationship request sent event: {}", eventId);
+        } catch (Exception e) {
+            log.error("Failed to publish relationship request sent event", e);
+            // Don't fail the main operation if event publishing fails
+        }
+
+        // Cache the relationship type for future use
+        cacheService.cacheRelationshipTypeData(relationshipType.getId(), relationshipType);
+
         return convertToResponse(savedRequest);
     }
 
@@ -110,6 +140,46 @@ public class RelationshipRequestServiceImpl implements RelationshipRequestServic
         }
 
         UserRelationship updatedRelationship = userRelationshipRepository.save(relationship);
+
+        // Publish appropriate event based on response
+        try {
+            String eventId = eventPublisherService.generateEventId();
+            if (request.getAction() == RespondToRelationshipRequest.ResponseAction.ACCEPT) {
+                RelationshipRequestAcceptedEvent event = RelationshipRequestAcceptedEvent.create(
+                        eventId,
+                        updatedRelationship.getId(),
+                        request.getResponderUserId(),
+                        relationship.getUser1Id(),
+                        relationship.getRelationshipType().getId(),
+                        relationship.getRelationshipType().getName(),
+                        request.getResponseMessage(),
+                        relationship.getContextId()
+                );
+                eventPublisherService.publishRelationshipEvent(event);
+                log.info("Published relationship request accepted event: {}", eventId);
+            } else {
+                RelationshipRequestRejectedEvent event = RelationshipRequestRejectedEvent.create(
+                        eventId,
+                        updatedRelationship.getId(),
+                        request.getResponderUserId(),
+                        relationship.getUser1Id(),
+                        relationship.getRelationshipType().getId(),
+                        relationship.getRelationshipType().getName(),
+                        request.getResponseMessage(),
+                        relationship.getContextId()
+                );
+                eventPublisherService.publishRelationshipEvent(event);
+                log.info("Published relationship request rejected event: {}", eventId);
+            }
+        } catch (Exception e) {
+            log.error("Failed to publish relationship response event", e);
+            // Don't fail the main operation if event publishing fails
+        }
+
+        // Evict user relationships cache for both users
+        cacheService.evictUserRelationshipsData(relationship.getUser1Id());
+        cacheService.evictUserRelationshipsData(relationship.getUser2Id());
+
         return convertToResponse(updatedRelationship);
     }
 
