@@ -23,9 +23,9 @@ public class JwtConfig {
 
     /**
      * JWT token expiration time in milliseconds.
-     * Default: 24 hours (86400000 ms)
+     * Default: 15 minutes (900000 ms) - matches Auth Service standard
      */
-    private long expiration = 86400000;
+    private long expiration = 900000;
 
     /**
      * JWT refresh token expiration time in milliseconds.
